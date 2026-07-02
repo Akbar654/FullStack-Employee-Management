@@ -1,0 +1,48 @@
+name: Full Stack CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Backend
+        working-directory: server
+        run: npm install
+
+      - name: Install Frontend
+        working-directory: client
+        run: npm install
+
+      - name: Lint Backend
+        working-directory: server
+        run: npm run lint
+
+      - name: Lint Frontend
+        working-directory: client
+        run: npm run lint
+
+      - name: Test Backend
+        working-directory: server
+        run: npm test
+
+      - name: Test Frontend
+        working-directory: client
+        run: npm test
+
+      - name: Build Frontend
+        working-directory: client
+        run: npm run build
